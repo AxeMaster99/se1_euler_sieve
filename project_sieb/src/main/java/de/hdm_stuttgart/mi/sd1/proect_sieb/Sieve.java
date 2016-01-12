@@ -12,6 +12,7 @@ public class Sieve {
 	 *            The last value to be considered. May or may not be prime.
 	 * 
 	 */
+	
 	public Sieve(final int limit) {
 		nonPrimes = new boolean[limit / 2 + 1];
 
@@ -56,5 +57,27 @@ public class Sieve {
 			return true;
 		else
 			return false;
+	}
+
+	public PrimeFrequencySet getPrimeFactors(int nonPrime) {
+		PrimeFrequencySet pfs = new PrimeFrequencySet();
+
+		int currentPrime = 0;
+		int frequency = 0;
+		PrimeFrequency prime;
+		
+		while (nonPrimes[nonPrime/2]==true || nonPrime%2==0) {
+			currentPrime = this.getNextNumber(currentPrime, nonPrime);
+			while (nonPrime % currentPrime == 0) {
+				frequency++;
+				nonPrime= nonPrime/currentPrime;
+			}
+			prime = new PrimeFrequency(currentPrime, frequency);
+			pfs.add(prime);
+			frequency =0;
+		}
+		prime = new PrimeFrequency(nonPrime,1);
+		pfs.add(prime);
+		return pfs;
 	}
 }

@@ -2,7 +2,7 @@ package de.hdm_stuttgart.mi.sd1.proect_sieb;
 
 public class PrimeFrequencySet {
 	private final static int initialCapacity = 16;
-	int count = 0;
+	int index = 0;
 
 	private PrimeFrequency[] store = new PrimeFrequency[initialCapacity]; // May
 																			// grow
@@ -53,8 +53,10 @@ public class PrimeFrequencySet {
 				break;
 			}
 		}
-		store[count] = primeFrequency;
-		count++;
+		store[index] = primeFrequency;
+		index++;
+
+		
 	}
 
 	/**
