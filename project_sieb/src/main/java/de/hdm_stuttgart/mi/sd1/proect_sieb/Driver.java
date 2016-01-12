@@ -4,7 +4,7 @@ public class Driver {
 
 	public static void main(String[] args) {
 
-		final int limit = 10;
+		final int limit = 12;
 		Sieve instance = new Sieve(limit);
 		System.out.println("Die Zahl " + limit + " ist " + (instance.isPrime(limit) ? "keine" : "eine") + " Primzahl.");
 		PrimeFrequencySet pfs = instance.getPrimeFactors(limit);
