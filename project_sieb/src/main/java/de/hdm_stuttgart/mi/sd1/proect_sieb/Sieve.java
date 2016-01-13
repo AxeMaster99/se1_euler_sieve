@@ -12,7 +12,7 @@ public class Sieve {
 	 *            The last value to be considered. May or may not be prime.
 	 * 
 	 */
-	
+
 	public Sieve(final int limit) {
 		nonPrimes = new boolean[limit / 2 + 1];
 
@@ -45,7 +45,15 @@ public class Sieve {
 	}
 
 	public int getNextNumber(int currentNumber, int limit) {
-		for (int i = currentNumber + 2; i < limit && i > 0; i += 2) {
+		for (int i = currentNumber + 2; i < limit && i > 0; i += 2) { // geht hier auch <= ? für Primfaktorzerlegung brächte ich das
+			if (nonPrimes[i / 2] == false)
+				return i;
+		}
+		return 0;
+	}
+	
+	public int getNextPrim(int currentNumber, int limit) {
+		for (int i = currentNumber + 2; i <= limit && i > 0; i += 2) {
 			if (nonPrimes[i / 2] == false)
 				return i;
 		}
@@ -59,24 +67,62 @@ public class Sieve {
 			return false;
 	}
 
-	public PrimeFrequencySet getPrimeFactors(int nonPrime) {
-		PrimeFrequencySet pfs = new PrimeFrequencySet();
+	public PrimeFrequencySet getPrimeFactors(int prime) {
+
+		int initialCapacity = 0;
+		PrimeFrequency pf;
+
+		for (int i = 0; i <= prime / 2; i++) {
+
+			if (!nonPrimes[i]) {
+				initialCapacity++;
+			}
+		}
+
+		PrimeFrequencySet pfs = new PrimeFrequencySet(initialCapacity);
+
+		for (int i = 2; i <= prime;) {
+
+			if (prime % i == 0) {
+
+				pf = new PrimeFrequency(i, 1);
+				pfs.add(pf);
+				
+				prime = prime / i;
+
+			}
+			else{
+				if(i == 2)
+					i = 3;
+				else
+					i = getNextPrim(i, prime);
+			}
+
+		}
+
+		return pfs;
+
+	}
+
+	public PrimeFrequencySet getPrimeFactorsx(int nonPrime) {
+
+		PrimeFrequencySet pfs = new PrimeFrequencySet(0);
 
 		int currentPrime = 0;
 		int frequency = 0;
 		PrimeFrequency prime;
-		
-		while (nonPrimes[nonPrime/2]==true || nonPrime%2==0) {
+
+		while (nonPrimes[nonPrime / 2] == true || nonPrime % 2 == 0) {
 			currentPrime = this.getNextNumber(currentPrime, nonPrime);
 			while (nonPrime % currentPrime == 0) {
 				frequency++;
-				nonPrime= nonPrime/currentPrime;
+				nonPrime = nonPrime / currentPrime;
 			}
 			prime = new PrimeFrequency(currentPrime, frequency);
 			pfs.add(prime);
-			frequency =0;
+			frequency = 0;
 		}
-		prime = new PrimeFrequency(nonPrime,1);
+		prime = new PrimeFrequency(nonPrime, 1);
 		pfs.add(prime);
 		return pfs;
 	}

@@ -1,15 +1,22 @@
 package de.hdm_stuttgart.mi.sd1.proect_sieb;
 
 public class PrimeFrequencySet {
-	private final static int initialCapacity = 16;
-	int index = 0;
+	private final int initialCapacity;
+	private int index = 0;
 
-	private PrimeFrequency[] store = new PrimeFrequency[initialCapacity]; // May
-																			// grow
-																			// due
-																			// to
-																			// new
-																			// factors.
+	private PrimeFrequency[] store; // May
+	// grow
+	// due
+	// to
+	// new
+	// factors.
+
+	public PrimeFrequencySet(int initialCapacity) {
+
+		this.initialCapacity = initialCapacity;
+		this.store = new PrimeFrequency[initialCapacity];
+
+	}
 
 	/**
 	 * Searching for the existence of a {@link PrimeFrequency} with a matching
@@ -34,6 +41,32 @@ public class PrimeFrequencySet {
 	 *         "natural" insertion point) minus 1 (see example).
 	 */
 	public int find(final PrimeFrequency primeFrequency) {
+		int i = 0;
+		
+		if(store[0] == null)
+		{
+			return -1;
+		}
+		
+		
+		for (PrimeFrequency item : store) {
+			
+			if(item == null){
+				int negIndex = (i+1)*-1;
+				return negIndex;
+			}
+			
+			if(item.equals(primeFrequency))
+			{
+				return i;
+			}
+			else{
+				i++;
+			}
+
+
+			
+		}
 		return 0;
 	}
 
@@ -47,16 +80,14 @@ public class PrimeFrequencySet {
 	 *            values.
 	 */
 	public void add(final PrimeFrequency primeFrequency) {
-		for (int i = 0; i < this.getLength(); i++) {
-			if (store[i].prime == primeFrequency.prime) {
-				store[i].frequency = primeFrequency.frequency;
-				break;
-			}
-		}
-		store[index] = primeFrequency;
-		index++;
+		int index = this.find(primeFrequency);
 
-		
+		if (index >= 0) {
+			store[index].addFrequency(primeFrequency.getFrequency());
+		} else {
+			store[this.getLength()] = primeFrequency;
+		}
+
 	}
 
 	/**

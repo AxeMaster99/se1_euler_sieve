@@ -2,12 +2,12 @@ package de.hdm_stuttgart.mi.sd1.proect_sieb;
 
 public class PrimeFrequency {
 	
-	 public final int prime;
+		private int prime;
 	   
 	   /**
 	    * The prime's frequency of appearance. 
 	    */
-	   int frequency;
+	   private int frequency;
 
 	   
 	   /**
@@ -26,6 +26,10 @@ public class PrimeFrequency {
 	      return frequency;
 	   }
 	   
+	   public int getPrime(){
+		   return prime;
+	   }
+	   
 	   /**
 	    * change the given frequency value.
 	    * @param frequency change by this value.
@@ -36,7 +40,11 @@ public class PrimeFrequency {
 
 	   @Override
 	   public boolean equals(final Object obj) {
-		return false;
-		//TODO
+		   if(((PrimeFrequency)obj).getPrime() == this.getPrime()){
+			   return true;
+		   }
+		   else{
+			   return false;
+		   }
 	   }   			
 }
