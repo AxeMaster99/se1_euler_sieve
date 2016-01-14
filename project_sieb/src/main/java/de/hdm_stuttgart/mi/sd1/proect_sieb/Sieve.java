@@ -24,7 +24,8 @@ public class Sieve {
 		/*
 		 * erstellt ein neues Array, wo alle Werte gespeichert werden, die am
 		 * Ende eines Durchlaufs gestrichen werden. Grund hierfür siehe
-		 * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Euler.27s_Sieve
+		 * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Euler.27s_Sieve,
+		 * letzter Hinweise des Artikels.
 		 */
 		boolean[] rausstreichen = new boolean[limit / 2 + 1];
 
@@ -39,16 +40,26 @@ public class Sieve {
 
 		/*
 		 * In der inneren Schleife werden Zahlen markiert, die keine Primzahl
-		 * sind (currentPRime * nextNumber) Bsp. für erten Durchlauf: 3 * 3 = 9
-		 * 3 * 5 = 15 3 * 7 = 21 3 *_9_= 27 usw. Die Werte werden nicht sofort
-		 * in nonPrimes auf true gesetzt, sondern im temporären Array
-		 * rausstreichen gespeichert. Die innere Schleife läuft so lange, bis
-		 * currentPrime*nextNumber das Limit erreicht. Anschließend wird das
-		 * Array rausstrichen auf das Array nonPrimes übertragen.
+		 * sind (currentPrime * nextNumber). Die Werte werden nicht sofort in
+		 * nonPrimes auf true gesetzt, sondern im temporären Array rausstreichen
+		 * auf true gesetzt. Das liegt daran, das die 9 z.B. nicht gleich in
+		 * nonPrimes raussgestrichen werden kann (3*3=9), weil sie eben auch
+		 * noch mit der 3 multipliziert wird). Die innere Schleife läuft so
+		 * lange, bis currentPrime*nextNumber das Limit erreicht. Anschließend
+		 * wird das Array rausstrichen auf das Array nonPrimes Übertragen.
 		 * 
 		 * Dieser Vorgang wird durch die äußere Schleife so lange wiederholt,
 		 * bis currentprime*currentPrime das Limit erreicht.
+		 * 
+		 * Komplettes Beispiel mit limit = 28: innere Schleife: 3*3=9, 3*5=15,
+		 * 3*7=21, 3*!9!=27, rausspringen bei 3*10=30. Dann übertragen des
+		 * Arrays auf nonPrimes mit der Anweisung .clone(); currentPrime und
+		 * nextNumber werden jetzt auf 5 gesetzt; innereSchleife: 5*5=25,
+		 * rausspringen bei 5*7 = 35. Danach ist auch die Bedingung für die
+		 * äußere Schleife false, da 7*7=49. Alle Primzahlen sind gefunden und
+		 * in nonPrimes gespeichert.
 		 */
+		
 		while (currentPrime * currentPrime <= limit && currentPrime > 0) {
 			while (currentPrime * nextNumber <= limit && nextNumber > 0 && currentPrime * nextNumber > 0) {
 				int index = (currentPrime * nextNumber) / 2;
@@ -82,7 +93,9 @@ public class Sieve {
 	 * @param limit
 	 *            das Limit, bis zu denen Primzahlen gesucht werden.
 	 * @return die nächste Nummer, die in dem Array nonPrimes noch nicht
-	 *         gestrichen wurde, also nonPrimes[i/2]==false
+	 *         gestrichen wurde, also nonPrimes[i/2]==false Hinweis: ist nicht
+	 *         zwingend eine Primzahl, Erläuterung im langen Kommentar des
+	 *         Konstruktors "Sieve" (vor den verschachtelten While-Schleifen)
 	 */
 	private int getNextNumber(int currentNumber, int limit) {
 		for (int i = currentNumber + 2; i <= limit && i > 0; i += 2) {
@@ -93,9 +106,12 @@ public class Sieve {
 	}
 
 	/**
-	 * Überprüft, ob eine Zahl eine Primzahl ist, basierend auf dem Array nonPrimes.
-	 * Ist public, da von außerhalb eine beliebige Zahl im Limit überprüft werden kann.
-	 * @param candidate Die Zahl, welche überprüft werden soll
+	 * Überprüft, ob eine Zahl eine Primzahl ist, basierend auf dem Array
+	 * nonPrimes. Ist public, da von außerhalb eine beliebige Zahl im Limit
+	 * überprüft werden kann.
+	 * 
+	 * @param candidate
+	 *            Die Zahl, welche überprüft werden soll
 	 * @return true, wenn die Zahl keine Primzahl ist, ansonsten false
 	 */
 	public boolean isPrime(int candidate) {
@@ -106,9 +122,12 @@ public class Sieve {
 	}
 
 	/**
-	 * Primfaktorzerlegung einer gegebenen Zahl, basierend auf dem Array nonPrimes
-	 * @param prime 
-	 * @return PrimeFrequencySet Ein Objekt, wo alle Primzahlen mit ihrer Häufigkeit drin gespeichert sind
+	 * Primfaktorzerlegung einer gegebenen Zahl, basierend auf dem Array
+	 * nonPrimes
+	 * 
+	 * @param prime
+	 * @return PrimeFrequencySet Ein Objekt, wo alle Primzahlen mit ihrer
+	 *         Häufigkeit drin gespeichert sind
 	 */
 	public PrimeFrequencySet getPrimeFactors(int prime) {
 
@@ -117,7 +136,9 @@ public class Sieve {
 		PrimeFrequencySet pfs;
 
 		/*
-		 * Hier wird die Größe für das PrimeFrequencySet ermittelt, indem alle Primzahlen bis zur gegebenen Primzahl des Arrays nonPrimes gezählt werden
+		 * Hier wird die Größe für das PrimeFrequencySet ermittelt, indem
+		 * alle Primzahlen bis zur gegebenen Primzahl des Arrays nonPrimes
+		 * gezählt werden
 		 */
 		for (int i = 0; i <= prime / 2; i++) {
 
@@ -127,8 +148,8 @@ public class Sieve {
 		}
 
 		/*
-		 * Ein neues PrimeFrequencySet wird erstellt.
-		 * initialCapacity ist die Größe, basierend auf der Zählung der Primzahlen
+		 * Ein neues PrimeFrequencySet wird erstellt. initialCapacity ist die
+		 * Größe, basierend auf der Zählung der Primzahlen
 		 */
 		pfs = new PrimeFrequencySet(initialCapacity);
 
