@@ -1,19 +1,11 @@
 package de.hdm_stuttgart.mi.sd1.proect_sieb;
 
 public class PrimeFrequencySet {
-	private final int initialCapacity;
-	private int index = 0;
 
-	private PrimeFrequency[] store; // May
-	// grow
-	// due
-	// to
-	// new
-	// factors.
+	private PrimeFrequency[] store; 
 
 	public PrimeFrequencySet(int initialCapacity) {
 
-		this.initialCapacity = initialCapacity;
 		this.store = new PrimeFrequency[initialCapacity];
 
 	}
@@ -42,30 +34,24 @@ public class PrimeFrequencySet {
 	 */
 	public int find(final PrimeFrequency primeFrequency) {
 		int i = 0;
-		
-		if(store[0] == null)
-		{
+
+		if (store[0] == null) {
 			return -1;
 		}
-		
-		
+
 		for (PrimeFrequency item : store) {
-			
-			if(item == null){
-				int negIndex = (i+1)*-1;
+
+			if (item == null) {
+				int negIndex = (i + 1) * -1;
 				return negIndex;
 			}
-			
-			if(item.equals(primeFrequency))
-			{
+
+			if (item.equals(primeFrequency)) {
 				return i;
-			}
-			else{
+			} else {
 				i++;
 			}
 
-
-			
 		}
 		return 0;
 	}
@@ -102,11 +88,10 @@ public class PrimeFrequencySet {
 	}
 
 	/**
-	 * The prime factor corresponding to a given index.
 	 * 
 	 * @param index
-	 *            .
-	 * @return .
+	 *            
+	 * @return The prime factor corresponding to a given index.
 	 */
 	public PrimeFrequency get(int index) {
 		return store[index];
