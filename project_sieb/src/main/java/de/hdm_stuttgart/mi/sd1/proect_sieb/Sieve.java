@@ -59,7 +59,7 @@ public class Sieve {
 		 * äußere Schleife false, da 7*7=49. Alle Primzahlen sind gefunden und
 		 * in nonPrimes gespeichert.
 		 */
-		
+
 		while (currentPrime * currentPrime <= limit && currentPrime > 0) {
 			while (currentPrime * nextNumber <= limit && nextNumber > 0 && currentPrime * nextNumber > 0) {
 				int index = (currentPrime * nextNumber) / 2;
@@ -125,22 +125,27 @@ public class Sieve {
 	 * Primfaktorzerlegung einer gegebenen Zahl, basierend auf dem Array
 	 * nonPrimes
 	 * 
-	 * @param prime
+	 * @param nonPrime
+	 *            eine Zahl, die keine Primzahl ist (bei Primzahlen keine
+	 *            Primfaktorzerlegung notwendig)
 	 * @return PrimeFrequencySet Ein Objekt, wo alle Primzahlen mit ihrer
-	 *         Häufigkeit drin gespeichert sind
+	 *         Häufigkeit gespeichert sind.
 	 */
-	public PrimeFrequencySet getPrimeFactors(int prime) {
-
+	public PrimeFrequencySet getPrimeFactors(int nonPrime) {
+		// hab den Parameter von prime zu nonPrime umbenannt, da ja die
+		// Primfaktorzerlegung von einer Zahl gesucht wird die keine Primzahl
+		// ist...
 		int initialCapacity = 0;
 		PrimeFrequency pf;
 		PrimeFrequencySet pfs;
 
 		/*
-		 * Hier wird die Größe für das PrimeFrequencySet ermittelt, indem
-		 * alle Primzahlen bis zur gegebenen Primzahl des Arrays nonPrimes
-		 * gezählt werden
+		 * Hier wird die Größe für das PrimeFrequencySet ermittelt, indem alle
+		 * Primzahlen bis zur gegebenen Primzahl des Arrays nonPrimes gezählt
+		 * werden. Zwar werden nicht alle Speicherstellen gebraucht, aber so
+		 * kann es keine ArrayIndexOutOfBounce Exception geben.
 		 */
-		for (int i = 0; i <= prime / 2; i++) {
+		for (int i = 0; i <= nonPrime / 2; i++) {
 
 			if (!nonPrimes[i]) {
 				initialCapacity++;
@@ -149,27 +154,28 @@ public class Sieve {
 
 		/*
 		 * Ein neues PrimeFrequencySet wird erstellt. initialCapacity ist die
-		 * Größe, basierend auf der Zählung der Primzahlen
+		 * Größe, basierend auf der Zählung der Primzahlen im vorherigen
+		 * Abschnitt
 		 */
 		pfs = new PrimeFrequencySet(initialCapacity);
 
 		/*
 		 * 
 		 */
-		for (int i = 2; i <= prime;) {
+		for (int i = 2; i <= nonPrime;) {
 
-			if (prime % i == 0) {
+			if (nonPrime % i == 0) {
 
 				pf = new PrimeFrequency(i, 1);
 				pfs.add(pf);
 
-				prime = prime / i;
+				nonPrime = nonPrime / i;
 
 			} else {
 				if (i == 2)
 					i = 3;
 				else
-					i = getNextNumber(i, prime);
+					i = getNextNumber(i, nonPrime);
 			}
 
 		}

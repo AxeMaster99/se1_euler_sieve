@@ -2,7 +2,7 @@ package de.hdm_stuttgart.mi.sd1.proect_sieb;
 
 public class PrimeFrequencySet {
 
-	private PrimeFrequency[] store; 
+	private PrimeFrequency[] store;
 
 	public PrimeFrequencySet(int initialCapacity) {
 
@@ -90,7 +90,7 @@ public class PrimeFrequencySet {
 	/**
 	 * 
 	 * @param index
-	 *            
+	 * 
 	 * @return The prime factor corresponding to a given index.
 	 */
 	public PrimeFrequency get(int index) {
