@@ -59,10 +59,10 @@ public class Sieve {
 		/*
 		 * Zählt die Primzahlen (Alle Werte die false sind)
 		 */
-		int count = 0;
+		int count = 1;
 		for (int i = 0; i < nonPrimes.length; i++) {
 
-			if (nonPrimes[i] == false) {
+			if (nonPrimes[i] == false && 2 * i + 1 < limit) {
 				count++;
 			}
 		}
@@ -91,14 +91,17 @@ public class Sieve {
 	}
 
 	/**
-	 * @param currentNumber
+	 * @param currentPrime
+	 *            die aktuelle Primzahl, ab der die nächste gesucht werden soll.
 	 * 
 	 * @param limit
+	 *            bis zu maximal diesem Limit werden Primzahlen gesucht
 	 * 
-	 * @return
+	 * @return gibt die nächste gefundene Primzahl zurück, sofern es eine gibt.
+	 *         Ansonsten ist die Rückgabe 0.
 	 */
-	private int getNextPrime(int currentNumber, int limit) {
-		for (int i = currentNumber + 2; i <= limit && i > 0; i += 2) {
+	private int getNextPrime(int currentPrime, int limit) {
+		for (int i = currentPrime + 2; i <= limit && i > 0; i += 2) {
 			if (nonPrimes[i / 2] == false)
 				return i;
 		}
@@ -106,11 +109,14 @@ public class Sieve {
 	}
 
 	/**
-	 * @param currentPrime;
+	 * @param currentPrime
+	 *            Die aktuelle Primzahl, mit der gerade gerechnet wird.
 	 * 
-	 * @param limit
+	 * @param das
+	 *            Limit des Siebes.
 	 * 
-	 * @return
+	 * @return gibt die Zahl zurück, die mit currentPrime multipliziert zuletzt
+	 *         noch kleiner als das Limit ist.
 	 */
 
 	private int getLastNumber(int currentPrime, int limit) {
