@@ -4,7 +4,7 @@ public class Driver {
 
 	public static void main(String[] args) {
 
-		final int limit = 123413;
+		final int limit = 1230907;
 		Sieve instance = new Sieve(limit);
 		System.out.println("Die Zahl " + limit + " ist " + (instance.isPrime(limit) ? "keine" : "eine") + " Primzahl.");
 

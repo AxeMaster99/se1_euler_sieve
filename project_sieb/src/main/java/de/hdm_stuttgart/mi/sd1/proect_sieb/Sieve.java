@@ -62,7 +62,7 @@ public class Sieve {
 		int count = 1;
 		for (int i = 0; i < nonPrimes.length; i++) {
 
-			if (nonPrimes[i] == false && 2 * i + 1 < limit) {
+			if (nonPrimes[i] == false && 2 * i + 1 <= limit) {
 				count++;
 			}
 		}
