@@ -48,7 +48,7 @@ public class Sieve {
 		while (currentPrime * currentPrime <= limit && currentPrime > 0) {
 			int lastNumber = this.getLastNumber(currentPrime, limit);
 			nextNumber = lastNumber;
-			while (nextNumber > 0 && currentPrime * nextNumber <= limit) {
+			while (currentPrime * nextNumber <= limit && currentPrime <= nextNumber) {
 				nonPrimes[(currentPrime * nextNumber) / 2] = true;
 				nextNumber = this.getNextNumber(nextNumber);
 			}
@@ -90,6 +90,13 @@ public class Sieve {
 		return 0;
 	}
 
+	/**
+	 * @param currentNumber
+	 * 
+	 * @param limit
+	 * 
+	 * @return
+	 */
 	private int getNextPrime(int currentNumber, int limit) {
 		for (int i = currentNumber + 2; i <= limit && i > 0; i += 2) {
 			if (nonPrimes[i / 2] == false)
@@ -97,6 +104,14 @@ public class Sieve {
 		}
 		return 0;
 	}
+
+	/**
+	 * @param currentPrime;
+	 * 
+	 * @param limit
+	 * 
+	 * @return
+	 */
 
 	private int getLastNumber(int currentPrime, int limit) {
 		int temp = limit / currentPrime;
