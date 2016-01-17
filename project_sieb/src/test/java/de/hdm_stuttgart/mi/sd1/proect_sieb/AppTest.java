@@ -5,15 +5,20 @@ import org.junit.Test;
 
 public class AppTest {
 	
-	final Sieve sieve = new Sieve(10000000);
+	final Sieve sieve10mio = new Sieve(10000000);
+	final Sieve sieveIntMax = new Sieve(Integer.MAX_VALUE);
 
 	@Test
-	   public void testPfs () {
-	      PrimeFrequencySet pfs = sieve.getPrimeFactors(12); 
+	   public void testPfs12 () {
+	      PrimeFrequencySet pfs = sieve10mio.getPrimeFactors(12); 
 	      Assert.assertEquals(2, pfs.getLength()); 
 	      Assert.assertEquals(new PrimeFrequency(2, 2), pfs.get(0)); 
 	      Assert.assertEquals(new PrimeFrequency(3, 1), pfs.get(1));
-	      PrimeFrequencySet pfs2 = sieve.getPrimeFactors(201312);
+	   }
+	
+	@Test
+	   public void testPfs201312 () {
+	      PrimeFrequencySet pfs2 = sieve10mio.getPrimeFactors(201312);
 	      Assert.assertEquals(3, pfs2.getLength()); 
 	      Assert.assertEquals(new PrimeFrequency(2, 5), pfs2.get(0)); 
 	      Assert.assertEquals(new PrimeFrequency(3, 3), pfs2.get(1)); 
@@ -21,10 +26,19 @@ public class AppTest {
 	   }
 	
 	@Test 
-		public void testSieve(){
-	      Assert.assertEquals(sieve.isPrime(607), false);
-	      Assert.assertEquals(sieve.isPrime(608), true);
-	      Assert.assertEquals(sieve.numPrimesFound, 664579);
+		public void testSieve10mio(){
+	      Assert.assertEquals(sieve10mio.isPrime(607), false);
+	      Assert.assertEquals(sieve10mio.isPrime(608), true);
+	      Assert.assertEquals(sieve10mio.numPrimesFound, 664579);
 	}
+	
+	@Test 
+	public void testSieveIntMax(){
+      Assert.assertEquals(sieveIntMax.isPrime(607), false);
+      Assert.assertEquals(sieveIntMax.isPrime(608), true);
+      Assert.assertEquals(sieveIntMax.numPrimesFound, 105097565);
+}
+	
+	
 		
 }

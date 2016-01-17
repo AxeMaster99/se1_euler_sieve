@@ -6,6 +6,8 @@ public class Driver {
 
 		final int limit = Integer.MAX_VALUE;
 		Sieve instance = new Sieve(limit);
+		
+		System.out.println("Von 0 bis " + limit + " wurden " + instance.numPrimesFound + " Primzahlen gefunden.");
 
 		int tester =limit;
 		while (!instance.isPrime(tester)) {
@@ -13,6 +15,9 @@ public class Driver {
 			tester-=1;
 		}
 		System.out.println("Die Zahl " + tester + " ist keine Primzahl.");
+		
+		
+		
 		PrimeFrequencySet pfs = instance.getPrimeFactors(tester);
 
 		String separator = "";

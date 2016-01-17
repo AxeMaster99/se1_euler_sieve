@@ -67,7 +67,7 @@ public class Sieve {
 			}
 		}
 		numPrimesFound = count;
-		System.out.println("Von 0 bis " + limit + " wurden " + count + " Primzahlen gefunden.");
+		
 	}
 
 	/**
