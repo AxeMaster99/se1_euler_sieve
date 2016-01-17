@@ -4,24 +4,27 @@ public class Driver {
 
 	public static void main(String[] args) {
 
-		final int limit = 1230907;
+		final int limit = Integer.MAX_VALUE;
 		Sieve instance = new Sieve(limit);
-		System.out.println("Die Zahl " + limit + " ist " + (instance.isPrime(limit) ? "keine" : "eine") + " Primzahl.");
 
-		if (instance.isPrime(limit)) {
-			PrimeFrequencySet pfs = instance.getPrimeFactors(limit);
+		int tester =limit;
+		while (!instance.isPrime(tester)) {
+			System.out.println("Die Zahl " + tester + " ist eine Primzahl.");
+			tester-=1;
+		}
+		System.out.println("Die Zahl " + tester + " ist keine Primzahl.");
+		PrimeFrequencySet pfs = instance.getPrimeFactors(tester);
 
-			String separator = "";
+		String separator = "";
 
-			System.out.print("Primfaktorzerlegung von " + limit + ": ");
+		System.out.print("Primfaktorzerlegung von " + tester + ": ");
 
-			for (PrimeFrequency pf : pfs.get()) {
+		for (PrimeFrequency pf : pfs.get()) {
 
-				if (pf != null) {
-					for (int i = 0; i < pf.getFrequency(); i++) {
-						System.out.print(separator + pf.getPrime());
-						separator = " * ";
-					}
+			if (pf != null) {
+				for (int i = 0; i < pf.getFrequency(); i++) {
+					System.out.print(separator + pf.getPrime());
+					separator = " * ";
 				}
 			}
 
