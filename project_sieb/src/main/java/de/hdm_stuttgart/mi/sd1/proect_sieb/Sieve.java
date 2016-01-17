@@ -22,52 +22,37 @@ public class Sieve {
 		nonPrimes = new boolean[limit / 2 + 1];
 
 		/*
-		 * erstellt ein neues Array, wo alle Werte gespeichert werden, die am
-		 * Ende eines Durchlaufs gestrichen werden. Grund hierfür siehe
-		 * https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Euler.27s_Sieve,
-		 * letzter Hinweise des Artikels.
-		 */
-		boolean[] rausstreichen = new boolean[limit / 2 + 1];
-
-		/*
 		 * Die Zahl 1 wird zu Beginn als Nicht-Primzahl deklariert, da diese in
-		 * den Schleifen nicht beachtet wird, da currentPrime und nextNumber bei
-		 * 3 starten
+		 * den Schleifen nicht beachtet wird, da currentPrime bei 3 startet
 		 */
-		rausstreichen[0] = true;
+		nonPrimes[0] = true;
 		int currentPrime = 3;
-		int nextNumber = 3;
+		int nextNumber;
 
 		/*
-		 * In der inneren Schleife werden Zahlen markiert, die keine Primzahl
-		 * sind (currentPrime * nextNumber). Die Werte werden nicht sofort in
-		 * nonPrimes auf true gesetzt, sondern im temporären Array rausstreichen
-		 * auf true gesetzt. Das liegt daran, das die 9 z.B. nicht gleich in
-		 * nonPrimes raussgestrichen werden kann (3*3=9), weil sie eben auch
-		 * noch mit der 3 multipliziert wird). Die innere Schleife läuft so
-		 * lange, bis currentPrime*nextNumber das Limit erreicht. Anschließend
-		 * wird das Array rausstrichen auf das Array nonPrimes Übertragen.
-		 * 
-		 * Dieser Vorgang wird durch die äußere Schleife so lange wiederholt,
-		 * bis currentprime*currentPrime das Limit erreicht.
-		 * 
-		 * Komplettes Beispiel mit limit = 28: innere Schleife: 3*3=9, 3*5=15,
-		 * 3*7=21, 3*!9!=27, rausspringen bei 3*10=30. Dann übertragen des
-		 * Arrays auf nonPrimes mit der Anweisung .clone(); currentPrime und
-		 * nextNumber werden jetzt auf 5 gesetzt; innereSchleife: 5*5=25,
-		 * rausspringen bei 5*7 = 35. Danach ist auch die Bedingung für die
-		 * äußere Schleife false, da 7*7=49. Alle Primzahlen sind gefunden und
-		 * in nonPrimes gespeichert.
+		 * Erklärung anhand eines Beispiels: Limit sei 20. Die Bedingung für die
+		 * erste While-Schleife ist true. Der Methodenaufruf liefert die letzte
+		 * Primzahl zurück, die mit currentPrime -> (3) multipliziert noch unter
+		 * dem Limit liegt. In diesem Fall wäre das 5, da 3*5=15 aber 3*7
+		 * bereits 21. In der inneren Schleife werden dann alle Primzahlen mit
+		 * currentPrime multipliziert, wobei immer die nächste kleinere Primzahl
+		 * durch Methodenaufrufe ausgerechnet wird. In der inneren Schleife
+		 * passiert also folgendes: Das Arrayelement, das die Zahlen 3*5=15,
+		 * 3*3=9 repräsentiert, wird auf true gesetzt. Dann wird currentPrime
+		 * durch einen Methodenaufruf neu berechnet -> (5). Bereits dann gilt
+		 * die Bedingung für die äußere Schleife nicht mehr, da 5*5 bereits 25
+		 * und somit größer als 20. Damit sind alle Zahlen des Arrays, die nicht
+		 * auf true gesetzt wurden, Primzahlen.
 		 */
 
 		while (currentPrime * currentPrime <= limit && currentPrime > 0) {
-			while (currentPrime * nextNumber <= limit && nextNumber > 0 && currentPrime * nextNumber > 0) {
-				int index = (currentPrime * nextNumber) / 2;
-				rausstreichen[index] = true;
-				nextNumber = this.getNextNumber(nextNumber, limit);
+			int lastNumber = this.getLastNumber(currentPrime, limit);
+			nextNumber = lastNumber;
+			while (nextNumber > 0 && currentPrime * nextNumber <= limit) {
+				nonPrimes[(currentPrime * nextNumber) / 2] = true;
+				nextNumber = this.getNextNumber(nextNumber);
 			}
-			nonPrimes = rausstreichen.clone();
-			currentPrime = this.getNextNumber(currentPrime, limit);
+			currentPrime = this.getNextPrime(currentPrime, limit);
 			nextNumber = currentPrime;
 		}
 
@@ -97,12 +82,32 @@ public class Sieve {
 	 *         zwingend eine Primzahl, Erläuterung im langen Kommentar des
 	 *         Konstruktors "Sieve" (vor den verschachtelten While-Schleifen)
 	 */
-	private int getNextNumber(int currentNumber, int limit) {
+	private int getNextNumber(int currentNumber) {
+		for (int i = currentNumber - 2; i > 2; i -= 2) {
+			if (nonPrimes[i / 2] == false)
+				return i;
+		}
+		return 0;
+	}
+
+	private int getNextPrime(int currentNumber, int limit) {
 		for (int i = currentNumber + 2; i <= limit && i > 0; i += 2) {
 			if (nonPrimes[i / 2] == false)
 				return i;
 		}
 		return 0;
+	}
+
+	private int getLastNumber(int currentPrime, int limit) {
+		int temp = limit / currentPrime;
+		if (temp % 2 == 0)
+			temp -= 1;
+		if (nonPrimes[temp / 2] == false)
+			return temp;
+		else {
+			temp = this.getNextNumber(temp);
+			return temp;
+		}
 	}
 
 	/**
@@ -175,7 +180,7 @@ public class Sieve {
 				if (i == 2)
 					i = 3;
 				else
-					i = getNextNumber(i, nonPrime);
+					i = getNextPrime(i, nonPrime);
 			}
 
 		}
