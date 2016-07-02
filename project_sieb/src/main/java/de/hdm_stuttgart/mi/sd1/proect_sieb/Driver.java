@@ -30,6 +30,7 @@ public class Driver {
 				for (int i = 0; i < pf.getFrequency(); i++) {
 					System.out.print(separator + pf.getPrime());
 					separator = " * ";
+					//hallo samuel
 				}
 			}
 
