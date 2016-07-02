@@ -58,10 +58,6 @@ public class PrimeFrequency {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (((PrimeFrequency) obj).getPrime() == this.getPrime()) {
-			return true;
-		} else {
-			return false;
-		}
+		
 	}
 }
