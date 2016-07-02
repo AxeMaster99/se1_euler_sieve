@@ -7,9 +7,7 @@ public class PrimeFrequency {
 	 */
 	private int prime;
 
-	/**
-	 * The prime's frequency of appearance.
-	 */
+	
 	private int frequency;
 	
 	/**
